@@ -34,8 +34,12 @@ end
 
 install_home = ENV['GEM_HOME'] ? "-i #{ENV['GEM_HOME']}" : ""
 
+windows = (PLATFORM =~ /win32|cygwin/) rescue nil
+ENV['MERB_SUDO'] ||= "sudo"
+SUDO = windows ? "" : ENV['MERB_SUDO']
+
 task :install => [:package] do
-  sh %{sudo gem install #{install_home} pkg/#{NAME}-#{VERSION} --no-update-sources}
+  sh %{#{SUDO} gem install #{install_home} pkg/#{NAME}-#{VERSION} --no-update-sources}
 end
 
 namespace :jruby do

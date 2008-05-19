@@ -51,8 +51,9 @@ end
 CLEAN.include ["**/.*.sw?", "pkg", "lib/*.bundle", "*.gem", "doc/rdoc", ".config", "coverage", "cache", "lib/merb-more.rb"]
 
 windows = (PLATFORM =~ /win32|cygwin/) rescue nil
-
-SUDO = windows ? "" : "sudo"
+ENV['MERB_SUDO'] ||= "sudo"
+SUDO = windows ? "" : ENV['MERB_SUDO']
+puts "Using sudo comand of: #{SUDO}"
 
 Rake::GemPackageTask.new(merb_more_spec) do |package|
   package.gem_spec = merb_more_spec

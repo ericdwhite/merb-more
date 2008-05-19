@@ -30,8 +30,12 @@ Rake::GemPackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
+windows = (PLATFORM =~ /win32|cygwin/) rescue nil
+ENV['MERB_SUDO'] ||= "sudo"
+SUDO = windows ? "" : ENV['MERB_SUDO']
+
 task :install => [:package] do
-  sh %{sudo gem install pkg/#{NAME}-#{VERSION} --no-update-sources}
+  sh %{#{SUDO} gem install pkg/#{NAME}-#{VERSION} --no-update-sources}
 end
 
 namespace :jruby do
